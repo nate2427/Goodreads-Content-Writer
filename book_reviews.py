@@ -1,6 +1,9 @@
 import requests
 import json
 import pandas as pd
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def extract_review_data(book_id, num_pages, api_key):
     # GraphQL endpoint URL
@@ -187,16 +190,16 @@ def extract_review_data(book_id, num_pages, api_key):
     return df
 
 if __name__ == "__main__":
-    # book_id -> 5NB0xZVy7hlyaO9xdCptrg (find in url of book review page)
-    book_id = input("Enter the book ID: ")
-    output_file_name = input("Enter name of output CSV: ")
-    num_pages = int(input("Enter the number of pages to extract: "))
-    api_key = "da2-xpgsdydkbregjhpr6ejzqdhuwy"
+  # book_id -> 5NB0xZVy7hlyaO9xdCptrg (find in url of book review page)
+  book_id = input("Enter the book ID: ")
+  output_file_name = input("Enter name of output CSV: ")
+  num_pages = int(input("Enter the number of pages to extract: "))
+  api_key = os.getenv("GOODREADS_API_KEY")
 
-    review_data = extract_review_data(book_id, num_pages, api_key)
-    print(review_data.head())
-    try:
-        review_data.to_csv(output_file_name)
-        print("Successfully scraped and saved the reviews.")
-    except:
-        print("Error saving scraped data.")
+  review_data = extract_review_data(book_id, num_pages, api_key)
+  print(review_data.head())
+  try:
+      review_data.to_csv(output_file_name)
+      print("Successfully scraped and saved the reviews.")
+  except:
+      print("Error saving scraped data.")
